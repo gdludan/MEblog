@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html >
+<head>
+    <meta charset="UTF-8">
+    {% block meta %}  {% endblock %}
+    {% if title %}<title>{{ title }} - 卤蛋博客</title>{% else %}<title>欢迎来到博客!</title>{% endif %}
+    <link rel="shortcut icon" href="{{ url_for('static',filename = 'favicon.ico') }}" type="image/x-ico">
+    <link rel="icon" href="{{ url_for('static',filename = 'favicon.ico') }}" type="image/x-ico">
+    <link href="{{ url_for('static',filename = 'css/bootstrap.min.css') }}" rel="stylesheet">
+    {% block style %}
+    <style  type="text/css">
+    body{
+        background: #98C17B url("../static/images/background.jpg") no-repeat top center;
+        background-size: 100% 100%;
+        background-attachment: fixed;}
+    @media screen and (min-width:768px){ #left_tab{display: block}#right_tab{width:80%}}
+    @media screen and (max-width:767px){ #left_tab{display: none }#right_tab{width:100%}}
+    *{border-radius:8px;}
+    </style>
+    {% endblock %}
+    </head>
+    <body {% block body_style %}{{ body_style|safe }}{% endblock %}>
+    {% block navbar %}
+        <div class="navbar navbar-inverse" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle"
+                    data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">切换导航</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="{{ url_for('index') }}">卤蛋博客</a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="{{ url_for('index') }}">首页</a></li>
+                        {% if current_user.is_anonymous %}
+                        <li><a href="{{ url_for('login') }}">登录</a></li>
+                        <li><a href="{{ url_for('register') }}">注册</a></li>
+                        {% else %}
+                        <li><a href="{{ url_for('user', username=current_user.username) }}">用户中心</a></li>
+                        <li><a href="{{ url_for('logout') }}">退出</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>{% endblock %}
+         <div style="margin-left: 5%;margin-right: 5%; ">
+            {% block leTag %}{%- endblock leTag %}
+            <div style="background-color: #ffffff;float: left;height: 100%;border-radius: 10px;background-position-y: 9%;" id="right_tab" >
+               {% with messages = get_flashed_messages() %}
+                   {% if messages %}
+                    <ur >
+                        {% for message in messages %}
+                            <li>{{ message }}</li>>
+                        {% endfor %}
+                    </ur>
+                   {% endif %}
+               {% endwith %}
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+        <div id="Bottom_copyright">
+            <p style="margin-top: 1.1em">Copyright  ©  2018 {% block copyright %}卤蛋{%- endblock copyright %}-Inc.All Rights Reserved</p>
+            <p style="margin:0px;padding:0px;">ME 卤蛋博客 版本 1.0 </p>
+            <p style="margin-bottom: 1.1em">包括但不限于 文章及内容 所有权归 原作者 所有</p>
+        </div>
+    </body>
+</html>
+{% block scripts %}{%- endblock scripts %}
+<div style="float: left;height: 100%;width: 20%" id="left_tab">{% include 'Expand/Expd.html' %}</div>

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+    <form action="" method="post" enctype="multipart/form-data">
+        <p>
+            <input type="file" name="file" style="margin-right: 2px">
+            <input type =submit value="上传" style="">
+        </p>
+    </form><hr>
+    {% if upfiles == [] %}
+        <table>
+            <h4>你还没有上传过文件到服务器</h4>
+        </table><hr>
+    {% endif %}
+    {% for upfile in upfiles %}
+        <table>
+            <tr valign="top">
+                <h2 style="margin-top:0;margin-bottom: 0">
+                    <a href="{{ upfile.url|safe }}">{{ upfile.title }}</a></h2>
+                <p>{{ upfile.time|safe }}</p>
+            </tr>
+        </table><hr>
+    {% endfor %}
+    <div style="margin-left: 10%">
+        <ul id="menu">
+            <li>
+                <a href="{% if pagination.has_prev %}{{url_for('.upload',page=pagination.page-1)}}{% else %}#{% endif %}" >«</a>
+            </li>
+                {% for p in pagination.iter_pages() %}
+                    <li>
+                    <a href="{{ url_for('.upload',page=p)}}">{{p}}</a>
+                    </li>
+                {% endfor %}
+            <li>
+                <a href="{%if pagination.has_next %}{{url_for('.upload',page=pagination.page+1)}}{% else %}#{% endif %}" >»</a>
+            </li>
+        </ul>
+    </div>
+{% endblock %}
+{% block leTag %}{% endblock %}
+{% block style %}
+    <style  type="text/css">
+    body{
+        background: #98C17B url("../static/images/background.jpg") no-repeat top center;
+        background-size: 100% 100%;
+        background-attachment: fixed;}
+    @media screen and (min-width:768px){ #left_tab{display: block}#right_tab{width:100%}}
+    @media screen and (max-width:767px){ #left_tab{display: none }#right_tab{width:100%}}
+    </style>{% endblock %}

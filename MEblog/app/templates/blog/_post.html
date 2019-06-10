@@ -1,0 +1,13 @@
+<table>
+    <tr valign="top">
+        <h4 style="margin-top:0;margin-bottom: 0">
+            <a href="../id/{{ post.id|safe }}">{{ post.postitle }}</a>&ensp;</h4>&ensp;
+        <td><img  style="margin: 0;" src="{{ post.author.head_portrait }}" height="36" width="36">
+            {{ post.author.username }}&ensp;&ensp;&ensp;{{ post.timestamp }}
+            {% if current_user.id == post.user_id %}
+                <a href="../modify_tinymce_blog/{{post.id|safe}}">修改文章</a>&ensp;&ensp;
+                <a href="#" class="btn-delete-post" id="{{post.id}}">删除</a>
+            {% endif %}
+        </td>
+    </tr>
+</table>

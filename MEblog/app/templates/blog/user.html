@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block content %}
+    <table>
+        <tr valign="top">
+            <td><img height="180" width="180" src="{{ user.head_portrait }}"></td>
+            <td>
+                <h1>用户名: {{ user.username }}</h1>
+                {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
+                {% if user.reg_time%}<p>注册时间: {{ user.reg_time }}</p>{% endif %}
+                {% if user.last_seen and user.reg_time%}<p>最近登录: {{ user.last_seen }}</p>{% endif %}
+                {% if user == current_user %}
+                <p><a href="{{ url_for('edit_profile') }}">个人资料编辑</a>&ensp;&ensp;
+                    <a href="{{ url_for('head_portrait') }}">更改头像</a>&ensp;&ensp;
+                    <a href="{{ url_for('editor') }}">添加文章</a>&ensp;&ensp;
+                    <a href="{{ url_for('upload') }}">上传文件</a>
+                </p>{% endif %}
+            </td>
+        </tr>
+    </table>
+    <hr>
+    {% if posts != [] %}
+        {% for post in posts %}
+            {% include 'blog/_post.html' %}<hr>
+        {% endfor %}
+    {% endif %}
+    <script>
+        $('a.btn-delete-post').on('click',function(evt){
+            evt.preventDefault();
+            var post_id = $(this).attr('id');
+            $.ajax({
+                url: "/post/" + post_id+ "/delete",
+                type: "post",
+                dataType: "JSON",
+                success:function(resp){
+                    if(resp.status != 1  ){
+                        // 不等于 1 则说明删除失败，原因有很多，具体呢，就是服务端返回的 resp.message
+                        alert("删除失败，原因："+ resp.message);
+                    }
+                    intervalid = setInterval("cutdown()", 1000);
+                    // resp.status 等于 1 时，则说明成功，前端处理，此处为重新加载本页。
+                    location.href = "../";
+                    clearInterval(intervalid);
+                }
+            })
+        })
+    </script>
+    <div style="float: left;margin-left: 10%">
+        <ul id="menu">
+            <li>
+                <a href="{% if pagination.has_prev %}
+                    {{url_for('user',page=pagination.page-1,username=user.username)}}
+                {% else %}#{% endif %}" >«</a>
+            </li>
+                {% for p in pagination.iter_pages() %}
+                    <li>
+                    <a href="{{ url_for('user',page=p,username=user.username)}}">{{p}}</a>
+                    </li>
+                {% endfor %}
+            <li>
+                <a href="{%if pagination.has_next %}
+                    {{url_for('user',page=pagination.page+1,username=user.username)}}
+                {% else %}#{% endif %}" >»</a>
+            </li>
+        </ul>
+    </div>
+{% endblock %}{% block leTag %}{% endblock %}
+{% block style %}
+<style  type="text/css">
+body{
+    background: #98C17B url("../static/images/background.jpg") no-repeat top center;
+    background-size: 100% 100%;
+    background-attachment: fixed;}
+@media screen and (min-width:768px){ #left_tab{display: block}#right_tab{width:100%}}
+@media screen and (max-width:767px){ #left_tab{display: none }#right_tab{width:100%}}
+</style>{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+    {% block content %}
+        {% if posts != [] %}
+            {% for post in posts %}
+                <table>
+                    <tr valign="top">
+                        <h4 style="margin-top:0;margin-bottom: 0"><a href="{{ post.alink }}">{{ post.postitle }}</a>&ensp;</h4>&ensp;
+                        <td>{{ post.username }}&ensp;&ensp;&ensp;{{ post.timestamp }}
+                            {% if current_user.id == post.user_id %}
+                            <a href="{{post.bloglink}}">修改文章</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table><hr>
+            {% endfor %}
+		{% else %}
+			<table>
+                <tr valign="top">
+                    <h4 style="margin-top:0;margin-bottom: 0">无文章，尝试一下<a href="{{ url_for('exit_blog_text') }}">发布文章</a></h4>
+                </tr>
+            </table><hr>
+        {% endif %}
+    {% endblock %}

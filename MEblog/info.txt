@@ -1,0 +1,11 @@
+pip install -r requirements.txt
+
+flask db init
+
+flask db migrate -m 'users_table'
+flask db migrate -m 'posts_table'
+flask db migrate -m 'upfiles_table'
+flask db migrate -m 'comments_table'
+
+flask db upgrade
+

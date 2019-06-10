@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+    {% for post in posts %}
+        <table>
+            <tr valign="top">
+                <h4 style="margin-top:0;margin-bottom: 0">
+                    <a href="../id/{{ post.id|safe }}">{{ post.postitle }}</a>&ensp;</h4>&ensp;
+                <td>{{ post.author.username }}&ensp;&ensp;&ensp;{{ post.timestamp }}
+                    {% if current_user.id == post.user_id %}
+                    <a href="{{post.bloglink}}">修改文章</a>
+                    {% endif %}
+                </td>
+            </tr>
+        </table><hr>
+    {% endfor %}
+    <div style="margin-left: 10%">
+        <ul id="menu">
+            <li>
+                <a href="{% if pagination.has_prev %}{{url_for('.index',page=pagination.page-1)}}{% else %}#{% endif %}" >«</a>
+            </li>
+                {% for p in pagination.iter_pages() %}
+                    <li>
+                    <a href="{{ url_for('.index',page=p)}}">{{p}}</a>
+                    </li>
+                {% endfor %}
+            <li>
+                <a href="{%if pagination.has_next %}{{url_for('.index',page=pagination.page+1)}}{% else %}#{% endif %}" >»</a>
+            </li>
+        </ul>
+    </div>
+{% endblock %}
+{% block leTag %}{#
+    <div id="left_tab">
+        {% include 'Expand/tag.html' %}
+    </div> #}
+{%- endblock leTag %}
+{% block style %}
+<style  type="text/css">
+body{
+    background: #98C17B url("../static/images/background.jpg") no-repeat top center;
+    background-size: 100% 100%;
+    background-attachment: fixed;}
+@media screen and (min-width:768px){ #left_tab{display: block}#right_tab{width:100%}}
+@media screen and (max-width:767px){ #left_tab{display: none }#right_tab{width:100%}}
+</style>{% endblock %}

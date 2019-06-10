@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>文章编辑</h1>
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.postitle.label }}<br>
+            {{ form.postitle(size=32,style='width:100%;') }}<br>
+            {% for error in form.postitle.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.postbody.label }}<br>
+            {{ form.postbody(cols=180, rows=10,style='width:100%;') }}<br>
+            {% for error in form.postbody.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+{% endblock %}

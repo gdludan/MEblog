@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{#    使用jinjia导入两个js#}
+{% block scripts %}
+    <script src="{{ url_for('static', filename='tinymce/js/tinymce/tinymce.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/tinymce_setup.js') }}"></script>
+{% endblock %}
+{% block content %}
+    <form  method="post" action="">
+        {% if cnt!={} %}<h1>编辑文章</h1>{% else %}<h1>添加文章</h1>{% endif %}
+        标题<input class="input" name="title" id="title" type="text" style="width:100%;" value="{{ cnt.title }}">
+        <textarea class="editor" name="content" id="content">
+            {% if cnt!={} %}{{ cnt.cnt }}{% endif %}</textarea>
+        <button type="submit" style="">发布</button>
+    </form>
+{% endblock %}
+{% block leTag %}{% endblock %}
+{% block style %}
+    <style  type="text/css">
+    body{
+        background: #98C17B url("../static/images/background.jpg") no-repeat top center;
+        background-size: 100% 100%;
+        background-attachment: fixed;}
+    @media screen and (min-width:768px){ #left_tab{display: block}#right_tab{width:100%}}
+    @media screen and (max-width:767px){ #left_tab{display: none }#right_tab{width:100%}}
+    </style>{% endblock %}

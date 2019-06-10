@@ -1,0 +1,45 @@
+<!-- edit_gravatar.html -->
+{% extends "base.html" %}
+{% block title %}编辑个人头像{% endblock %}
+{% block content %}
+<form method="POST" enctype="multipart/form-data" style="margin-bottom: 8px;margin-left: 5px">
+     {{ form.hidden_tag() }}
+     <div class="page-header"><h2>头像展览板~</h2></div>
+     <a class="btn btn-success upload" placeholder="上传头像" ><p id="show_gt">选择您要上传的头像~</p>
+        {{ form.photo(class="change",placeholder="上传头像",onchange="c()") }}
+     </a><br/>
+     {% for error in form.photo.errors %}
+         <span style="color: red;">{{ error }}</span>
+     {% endfor %}
+     {% if file_url %}
+     <br><img src="{{ file_url }}" width="256" height="256">
+     {% endif %}
+     <a class="btn btn-success"><-之前 之后-></a>
+     <img src="{{ file_url }}" id='show' width="256" height="256"><br/><br/>
+     {{ form.submit }}
+</form>
+<script type="text/javascript">
+    function c () {
+        var gt=document.getElementById('show_gt');
+        gt.innerText = '已选中图片~'
+        var r= new FileReader();
+        f=document.getElementById('photo').files[0];
+        r.readAsDataURL(f);
+        r.onload=function  (e) {
+            document.getElementById('show').src=this.result;
+        };
+    }
+</script>
+{% endblock %}
+{% block style %}
+<style  type="text/css">
+body{
+    background: #98C17B url("../static/images/background.jpg") no-repeat top center;
+    background-size: 100% 100%;
+    background-attachment: fixed;}
+@media screen and (min-width:768px){ #left_tab{display: block}#right_tab{width:100%}}
+@media screen and (max-width:767px){ #left_tab{display: none }#right_tab{width:100%}}
+.upload{padding: 5px 10px;height: 40px;line-height: 30px;position: relative;
+    border: 1px solid #999;text-decoration: none;text-align:center;color: #fff;}
+.change{position: absolute;overflow: hidden;right: 0;top: 0;opacity: 0;}
+</style>{% endblock %}
